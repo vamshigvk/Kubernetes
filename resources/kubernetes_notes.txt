@@ -1,0 +1,775 @@
+##KUBERNETES commands:
+
+Kubectl get all
+To get all the items in your namespace
+
+Kubectl apply -f echoserver-deployment.yaml
+To create deployment
+
+Kubectl get pods
+To verify deployment is running in a pod
+
+Kubectl get pods -o wide
+To see what nodes(VMS) the deployment is running on
+
+Kubectl delete pod echoserver-5d3jdbdu
+To delete pod, but kube will make another pod up
+
+A deployment is how you describe the desired state for your pod. We can deploy the docker image, define number of replicas, name the pod
+Kubectl apply -f echoserver-service.yaml
+To create a service
+
+To verify the service has been defined
+Kubectl get service
+
+Kubectl describe service echosvc
+To view the service details
+
+Kubectl describe ingress echo-ingress
+To view the ingress details
+
+Kubectl delete -f hastebin.yml
+To delete pod completely
+
+Kubectl exec -it hastebin-5dajdk sh
+To enter into pod terminal
+
+Cat /data/hastebin/fahusidnebshjd
+To view the data which you wrote earlier
+
+
+Root privileges can be obtained by running 'sudo −i'.
+
+
+_______________________________
+
+
+Kubernetes architecture main components:
+
+Node - is a physical/virtual machine on which k8s is installed, a node is a worker machine and that is where containers will be launched by kubernetes. also called as minions.
+
+Pod - The containers are encapsulated into a K8s object known as pods.A pod is a single instance of an application. A pod is the smallest object that you can create in K8s.
+
+Cluster - is a set of nodes grouped together, this way even if one node fails you have your application still accessible from the other nodes. Moreover having multiple nodes helps in sharing load as well.
+
+Master - The master server has the kube API server and that is what makes it a master.
+
+API server - The API server is a component of the Kubernetes control plane that exposes the Kubernetes API. The API server is the front end for the Kubernetes control plane.
+
+Etcd - Consistent and highly-available key value store used as Kubernetes' backing store for all cluster data. If your Kubernetes cluster uses etcd as its backing store, make sure you have a back up plan for those data.
+
+Kubelet    - the worker nodes have the kubelet agent that is responsible for interacting with a master
+to provide health information of the worker node and carry out actions requested by the Master on the
+worker nodes. An agent that runs on each node in the cluster. It makes sure that containers are running in a Pod. The kubelet takes a set of PodSpecs that are provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy. The kubelet doesn't manage containers which were not created by Kubernetes
+
+Container runtime - The container runtime is the software that is responsible for running containers. Kubernetes supports several container runtimes: Docker, containerd, CRI-O, and any implementation of the Kubernetes CRI (Container Runtime Interface)
+
+Controller - Control plane component that runs controller processes. Logically, each controller is a separate process, but to reduce complexity, they are all compiled into a single binary and run in a single process.
+
+Scheduler  - Control plane component that watches for newly created Pods with no assigned node, and selects a node for them to run on. Factors taken into account for scheduling decisions include: individual and collective resource requirements, hardware/software/policy constraints, affinity and anti-affinity specifications, data locality, inter-workload interference, and deadlines.
+
+Node Components - Node components run on every node, maintaining running pods and providing the Kubernetes runtime environment.
+
+Kubectl - The kubectl tool is used to deploy and manage applications on a Kubernetes cluster. To get cluster information, to get the status of other nodes in the cluster and to manage many other things. The kubectl run command is used to deploy an application on the cluster. The kubectl cluster info command is used to view information about the cluster and the kube ctl get nodes command is used to list all the nodes part of the cluster.
+
+
+_______________________________
+
+MCQs-
+
+worker machine in Kubernetes known as Node or Minion
+A Node in Kubernetes can only be a physical machine and can never be a virtual machine. - False
+Multiple Nodes together form a - cluster
+which processes runs on Kubernetes Master Node - Kube-apiserver
+Which is a distributed reliable key-value store used by kubernetes to store all data used to manage the cluster - etcd
+Which is the underlying framework that is responsible for running application in containers like Docker? - container runtime
+Which is the command line utility used to manage a kubernetes cluster? - kubectl
+Which service is responsible for distributing work or containers across multiple nodes. - scheduler
+
+_______________________________
+
+## to start the cluster:
+minikube config set driver docker # instead of using below command
+minikube start --driver=docker
+
+#output: 
+Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+
+## to stop the cluster:
+minikube stop
+
+#output:
+minikube
+type: Control Plane
+host: Stopped
+kubelet: Stopped
+apiserver: Stopped
+kubeconfig: Stopped
+
+#Pause Kubernetes without impacting deployed applications:
+minikube pause
+
+#Unpause a paused instance:
+minikube unpause
+
+#Increase the default memory limit (requires a restart):
+minikube config set memory 16384
+
+#Browse the catalog of easily installed Kubernetes services:
+minikube addons list
+
+#Create a second cluster running an older Kubernetes release:
+minikube start -p aged --kubernetes-version=v1.16.1
+
+#Delete all of the minikube clusters:
+minikube delete --all
+_______________________________
+
+## status of the local cluster:
+minikube status
+
+#output:
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+_______________________________
+
+##You can also use the kubectl CLI to get the cluster information:
+kubectl cluster-info
+
+#output: 
+Kubernetes control plane is running at https://127.0.0.1:51952
+CoreDNS is running at https://127.0.0.1:51952/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+_______________________________
+
+##Kubernetes Client and Server version
+kubectl version
+
+#output:
+Client Version: version.Info{Major:"1", Minor:"22", GitVersion:"v1.22.4", GitCommit:"b695d79d4f967c403a96986f1750a35eb75e75f1", GitTreeState:"clean", BuildDate:"2021-11-17T15:48:33Z", GoVersion:"go1.16.10", Compiler:"gc", Platform:"windows/amd64"}
+Server Version: version.Info{Major:"1", Minor:"22", GitVersion:"v1.22.3", GitCommit:"c92036820499fedefec0f847e2054d824aea6cd1", GitTreeState:"clean", BuildDate:"2021-10-27T18:35:25Z", GoVersion:"go1.16.9", Compiler:"gc", Platform:"linux/amd64"}
+
+_______________________________
+
+#Cluster IP Address
+minikube ip
+
+#output:
+192.168.49.2
+
+_______________________________
+
+#Kubernetes Dashboard
+minikube dashboard
+
+#output:
+opens a dashboard in browser
+
+minikube dashboard --url=true
+
+#output: 
+prints url
+
+_______________________________
+
+
+#view minikube logs
+minikube logs
+
+_______________________________
+
+#get the list of nodes
+kubectl get nodes
+
+#output:
+NAME       STATUS   ROLES                  AGE     VERSION
+minikube   Ready    control-plane,master   4h12m   v1.22.3
+
+_______________________________
+
+
+#when we started the cluster, there is a statement in the output that says “Kubectl is now configured to use the cluster.” What this is supposed to do is to eventually set the current context for the kubectl utility so that it knows which cluster it is talking to. Behind the scenes in your %HOMEPATH%\.kube directory, there is a config file that contains information about your Kubernetes cluster and the details for connecting to your various clusters is present over there.
+ 
+In case you see an error like the one below (I got it a few times), then you need to probably set the context again.
+kubectl get nodes
+
+#output error: 
+You must be logged in to the server (the server has asked for the client to provide credentials)
+
+The command for that is:
+kubectl config use-context minikube
+
+#output:
+switched to context "minikube".
+
+_______________________________
+
+#Running a Workload, Let us proceed now to running a simple Nginx container to see the whole thing in action:
+
+kubectl run hello-nginx --image=nginx --port=80
+
+#output:
+pod/hello-nginx created
+
+This creates a deployment and we can investigate into the Pod that gets created, which will run the container:
+kubectl get pods
+
+#output:
+NAME          READY   STATUS              RESTARTS   AGE
+hello-nginx   0/1     ContainerCreating   0          21s
+
+# this command gives the node where the pod is running and the ip address of the pod.
+kubectl get pods -o wide
+_______________________________
+
+#describe node/pod command
+kubectl describe pod hello-nginx
+
+#output:
+
+Name:         hello-nginx
+Namespace:    default
+Priority:     0
+Node:         minikube/192.168.49.2
+Start Time:   Mon, 03 Jan 2022 17:30:30 +0530
+Labels:       run=hello-nginx
+Annotations:  <none>
+Status:       Running
+IP:           172.17.0.5
+IPs:
+  IP:  172.17.0.5
+Containers:
+  hello-nginx:
+    Container ID:   docker://7650f10d17191fd4749597c6a0a897b94557acefd9bef9f2e1e6d3153f6d64b5
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Mon, 03 Jan 2022 17:30:54 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-csz4l (ro)
+Conditions:
+
+AND SO ON.......
+
+_______________________________
+
+#Expose a Service, to expose our basic Nginx deployment as a service
+
+kubectl expose deployment hello-nginx --type=NodePort
+
+#output:
+service "hello-nginx" exposed
+
+_______________________________
+
+#to get all the services running
+kubectl get services
+
+#output:
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   4h30m
+
+_______________________________
+
+# to get the URL for the service
+minikube service --url=true hello-nginx
+
+#output:
+http://192.168.99.100:31155/
+
+
+#if we do not use the url flag, then it can directly launch the browser and hit the service endpoint:
+minikube service hello-nginx
+
+_______________________________
+
+#to print logs related to pod:
+kubectl logs hello-nginx-2471083592-4vfz8
+
+_______________________________
+
+#Scaling the Service
+kubectl scale --replicas=3 deployment/hello-nginx
+
+#output:
+deployment "hello-nginx" scaled
+
+#to see the status of the deployment 
+kubectl get deployment
+_______________________________
+
+
+PODS Quiz:
+
+The smallest unit you can create in Kubernetes object model is: Pod
+
+A Pod can only have one container in it: False (a pod can have multiple containers, but of different type)
+
+What is the right approach to scale an application : Deploy additional pods ( but not deploying additional containers in the pod)
+
+_______________________________
+
+YAML:  Dictionary is unordered collection, but lists are ordered collection, # is a comment
+
+Key value Pair:
+
+Fruit: Apple
+Vegetable: Carrot
+Liquid: water
+Meat: Chicken
+
+
+Array/Lists:
+
+Fruits:
+-  Orange
+-  Apple
+-  Banana
+
+Vegetables:
+-  Carrot
+-  Cauliflower
+-  Tomato
+
+
+Dictionary/Map:
+
+Banana:
+	Calories: 105
+	Fat: 0.4g
+	Carbs: 27g
+
+Grapes:
+	Calories: 62
+	Fat: 0.3g
+	Carbs: 16g
+	
+
+Advanced YAML: Key Value/Dictionary/Lists
+
+Fruits:
+  - Banana:
+      Calories: 105
+      Fat: 0.4g
+      Carbs: 27g
+
+  - Grapes:
+      Calories: 62
+      Fat: 0.3g
+      Carbs: 16g
+
+_______________________________
+
+These fields must be present in all yml files:
+
+apiVersion:
+kind:
+metadata:
+spec:
+
+_______________________________
+
+Versions used for different deployments:
+
+Pods       - v1
+Service    - v1
+ReplicaSet - apps/v1
+Deployment - apps/v1
+
+_______________________________
+
+sample Pod-definition.yml file:
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: myapp-pod
+ labels:
+    app: myapp
+    type: front-end
+spec:
+ containers:
+    - name: nginx-container
+      image: nginx
+
+
+#commands:
+#to create the pod:
+kubectl create -f pod-definition.yml                   # you can also use apply instead of create , -f indicates file name
+
+#to get the pod details:
+kubectl get pods
+
+#to get detailed information about the pod
+kubectl describe pod myapp-pod
+
+
+
+
+_______________________________
+
+
+# to create yaml manifest file from command, to dry run the pod, which does not create a pod but creates yaml file 
+kubectl run redis --image=redis123 --dry-run=client -o yaml > redis-definition.yaml
+
+kubectl create -f redis-definition.yaml 
+
+
+_______________________________
+
+# to edit pod using command, to fix the image on the pod
+kubectl edit pod redis
+
+#to reflect changes in the pod, run again using below command
+kubectl apply -f redis-definition.yaml
+
+
+_______________________________
+
+
+replication controller and replicaset. both are same, but replication controller is replaced with new technology called replca set.
+
+#Note: Any new pods created with same labels used in relicasets are not allowed to create than the number of replicas configured on the replicaset.
+
+
+_______________________________
+
+#replication-controller-definition.yaml
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ name: myapp-rc 
+ labels:
+   app:myapp
+   type: front-end
+spec:
+ template:
+
+   metadata:
+    name: myapp-pod
+    labels:
+      app: myapp
+      type: front-end
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+
+  replicas: 3
+
+
+
+kubectl create -f replicaiton-controller-definition.yaml
+kubectl get replicationcontroller
+kubectl get pods
+
+_______________________________
+
+#replicaset-definition.yaml
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: myapp-replicaset
+spec: 
+ template:
+   
+  metadata:
+    name: myapp-pod
+    labels:
+      app: myapp
+      type: front-end
+  spec:
+   containers:
+   - name: nginx-container
+     image: nginx
+ replicas: 3
+ selector: 
+   matchLabels:
+     type: front-end
+
+
+#selector: it specifies how to identify Pods it can acquire from the existing pods.
+
+#replicaset commands:
+
+kubectl create -f replicaset-definition.yml 
+kubectl get replicaset
+kubectl delete replicaset myapp-replicaset
+kubectl replace -f replicaset-definition.yml
+Kubectl scale --replicas=6 -f replicaset-definition.yml
+kubectl scale --replicas=6 replicaset myapp-replicaset
+
+# to get the docker image that replicaset is using in yaml definition 
+kubectl describe replicaset replicaset-definition | grep -i image
+
+_______________________________
+
+
+# to update replicaset details , either edit the file using below command
+kubectl replace -f replicaset-definition.yaml
+
+#OR use SCALE command to change replicas count, but the details in the yaml file will not updated using scale command
+
+kubectl scale --replicas=6 -f replicaset-definition.yaml
+
+#OR provide details like type (replicaset) and name (myapp-replicaSet) format
+kubectl scale --replicas=6 replicaset myapp-replicaset
+
+_______________________________
+
+
+#Deployments: its yaml structure is same as replicaset except kind changes from replicaset to Deployment. A Deployment provides declarative updates for Pods and ReplicaSets.
+It creates deployment, replicasets and pods with a single below command.
+
+
+
+#deployment-definition.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: myapp-deployment
+spec: 
+ template:
+   
+  metadata:
+    name: myapp-pod
+    labels:
+      app: myapp
+      type: front-end
+  spec:
+   containers:
+   - name: nginx-container
+     image: nginx
+ replicas: 3
+ selector: 
+   matchLabels:
+     type: front-end
+
+
+
+
+Kubectl create -f deployment-definition.yaml
+kubectl get deployments
+kubectl get replicasets
+kubectl get pods
+kubectl describe deployment myapp-deployment
+
+# to view Deployments, ReplicaSets and pods using a single command:
+kubectl get all
+
+
+# to create a deployment without yaml definition and scale it later to desired number
+kubectl create deployment httpd-frontend --image=httpd:2.4-alpine
+kubectl scale deployment --replicas=3 httpd-frontend
+kubectl get deployments httpd-frontend
+
+_______________________________
+
+
+#Helpful aliases to save time https://www.ibm.com/cloud/blog/8-kubernetes-tips-and-tricks
+
+
+alias k='kubectl'
+alias kc='k config view --minify | grep name'
+alias kdp='kubectl describe pod'
+alias krh='kubectl run --help | more'
+alias ugh='kubectl get --help | more'
+alias c='clear'
+alias kd='kubectl describe pod'
+alias ke='kubectl explain'
+alias kf='kubectl create -f'
+alias kg='kubectl get pods --show-labels'
+alias kr='kubectl replace -f'
+alias kh='kubectl --help | more'
+alias krh='kubectl run --help | more'
+alias ks='kubectl get namespaces'
+alias l='ls -lrt'
+alias ll='vi ls -rt | tail -1'
+alias kga='k get pod --all-namespaces'
+alias kgaa='kubectl get all --show-labels'
+
+_______________________________
+
+#YAML editing with vi
+
+
+set smarttab
+set expandtab
+set shiftwidth=4
+set tabstop=4
+set number
+
+
+_______________________________
+
+
+#Deployments: update and rollbacks:
+A new deployment will create a new rollout, a new rollout will create a new revision 1.
+In future, when application is upgraded, meaning when the container version is updated, a new rollout is triggered, which will create a new revision 2. 
+it only updates the rest of the older pods when it has sufficient newer pods up and running, otherwise it will stop upgrading, and maintaing sufficient older pods 
+which enables us to rollback to a previous version if necessary
+
+##commands
+
+#create
+kubectl create -f deployment-definition.yml
+#to get the change cause when you run rollout history command
+kubectl create -f deployment-definition.yml --record
+
+#status
+kubectl rollout status deployment/myapp-deployment
+
+#to view revisions and history of rollouts
+#history 
+kubectl rollout history deployment/myapp-Deployment
+
+# 2 types of deployment strategies: by default it uses rolling update
+#Recreate: all newer versions are up only once all the older versions are down
+#rolling update: take down older and bring up newer version, one by one, with the help of new replicaset.
+kubectl get replicasets
+
+#once you do changes to dockerimageversion or replica count or labels, to get those changes reflected: 
+#update command:
+kubectl apply -f deployment-definition.yml 
+
+#to update image version on the go for the running containers, but yaml file doesn't change:
+kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
+
+#or use edit command 
+kubectl edit deployment deployment-name
+
+
+#to check if the update is using recreate or rolling update, find details in the events or at strategy type:
+kubectl describe deployment myapp-deployment
+
+#to rollback a deployment:
+#undo, the older revision number gets deleted and this deployment is given a new revision
+kubectl rollout undo deployment/myapp-deployment
+
+#to confirm rollback, using get command
+kubectl get ReplicaSets
+
+
+_______________________________
+
+#networking, cluster networking:
+- all containers/pods can communicate to one another without NAT
+- all nodes can communicate with all containers and vice-versa without NAT
+- each pod will have a unique ip, each node will have unique ip and each node will have an internal network from which the pods gets IPs
+
+_______________________________
+
+## SERVICES:
+
+Kubernetes services enable communication between various components within and outside of the application, kubernetes services helps us connect applications together with other applications or users.
+
+For example, our application has groups of parties running various sections, such as a group for serving frontend load to users and other groups for running backend processes, and a third group connecting
+to an external data source. It is services that enable connectivity between these groups of parts.
+
+Services enabled the frontend application to be made available to end users. It helps communication between backend and frontend parts and helps in establishing connectivity to an external data source.
+Thus, services enable loose coupling between micro services in our application.
+
+#Services types:
+
+#node port : service listen to a port on the node and forward request on that port to a port on the pod running the Web application. This type of service is known as a known port service because the service listens to a port on the node and forward request to the pod.
+Even if your 3 backend pods are hosted on 2 nodes, those pods can be accessible from 2 frontend nodes using the backend service port number.  
+-node port: 30008, node on the port, to access web server, ranges from 30000 to 32767, free port in valid range is picked if you dont provide node port in yaml 
+port: 80 , port on the service, also called service port, which is mandatory to provide in yaml file, 
+target port: 80, port on the pod, even if you dont provide target port, it assumes to be same as service port 
+Cluster IP of the service: Ther service is like a virtual server inside the node, inside the cluster, it has its own IP address, its called cluster IP of the service  
+
+-cluster IP : The service creates a virtual IP inside the cluster and enable communication between different services such as set of frontend servers to a set of backend servers 
+
+-load balancer : where it provisions a load balancer for our application in supported cloud providers
+
+_______________________________
+
+#service-definition-nodeport.yaml:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+ type: NodePort
+ ports:
+   - port: 80
+     targetPort: 80
+     nodePort: 30004
+ selector:
+   app: myapp
+
+#commands
+kubectl create -f service-definition.yaml
+kubectl get services or kubectl get svc
+
+#to create service-definition.yaml using commands, then run it using create/apply command
+kubectl expose deployment simple-webapp-deployment --name=webapp-service --target-port=8080 --type=NodePort --port=8080 --dry-run=client -o yaml > svc.yaml
+
+
+#to get the url of the service:
+minikube service myapp-service --url
+ex: 192.168.99.101:30004
+
+#oto get list both the obects pods and services
+kubectl get pods, svc
+
+#to create/apply all manifests in the current directory 
+kubectl create -f .
+
+_______________________________
+
+#service-definition-cluseterIP.yaml : default type is ClusterIP, this service can be now accessed using the cluseterIP or using the service name
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-end
+spec:
+ type: ClusterIP
+ ports:
+  - targetPort: 80 # is the port where the backend is exposed
+    port: 80  # is the port where service is exposed
+ selector:
+   app: myapp
+   type: back-end
+
+_______________________________
+
+##Links: is deprecated and docker swarm and networking are used instead
+Link is a command line option , which can be used to link two containers together. example: to link frontend container with backend container
+
+docker run -d --name=redis redis
+
+docker run -d --name=db postgres:9.4
+
+docker run -d --name=vote -p 5000:80 --link redis:redis voting-app
+
+docker run -d --name=result -p 5001:80 --link db:db result-app
+
+docker run -d --name=worker --link db:db --link redis:redis worker
+_______________________________
+
+
+
+
+
+
+
+
+
+
+ 

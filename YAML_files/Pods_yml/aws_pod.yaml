@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws
+  labels:
+    type: backend
+    env: production
+spec:
+  containers:
+    - name: aws
+      image: aws

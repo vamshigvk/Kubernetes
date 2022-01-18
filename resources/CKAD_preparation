@@ -1,0 +1,41 @@
+userful links:
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
+
+https://github.com/kubernetes/kubernetes
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-autocomplete
+
+source <(kubectl completion bash)
+alias k=kubectl
+complete -F __start_kubectl k
+
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
+
+https://medium.com/better-programming/kubernetes-tips-create-pods-with-imperative-commands-in-1-18-62ea6e1ceb32
+
+https://www.linkedin.com/pulse/kubernetes-deep-dive-part-3-generators-quick-poc-atharva-chauthaiwale/
+
+https://unofficial-kubernetes.readthedocs.io/en/latest/user-guide/kubectl-conventions/
+
+:set nu # afficher les numéros de lignes
+:set nu! # désactiver l'affichage des numéros de lignes
+
+kubectl explain is your magic secret: This command simplified the task for me during the exam to have the YAML syntax of a resource element.
+
+Root privileges can be obtained by running 'sudo −i'.
+
+
+
+
+
+_______________________________
+
+preparation links:
+
+https://medium.com/bb-tutorials-and-thoughts/practice-enough-with-these-questions-for-the-ckad-exam-2f42d1228552
+
+https://github.com/vamshigvk/CKAD-exercises
+
