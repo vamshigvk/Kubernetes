@@ -1,5 +1,11 @@
 userful links:
 
+https://github.com/dgkanatsios/CKAD-exercises
+
+killer.sh
+
+https://www.katacoda.com/liptanbiswas/courses/ckad-practice-challenges
+
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 
 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
@@ -8,9 +14,19 @@ https://github.com/kubernetes/kubernetes
 
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-autocomplete
 
-source <(kubectl completion bash)
+https://siddharthmehta72.medium.com/how-to-ace-ckad-exam-in-first-attempt-92122ff412b0
+
+echo “source <(kubectl completion bash)” >> ~/.bashrc # add autocomplete permanently to your bash shell.
 alias k=kubectl
 complete -F __start_kubectl k
+
+To edit the file, do vi ~/.vimrc and add the following lines.
+set ai
+set number
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set smartindent
 
 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
 

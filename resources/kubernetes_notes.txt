@@ -32,7 +32,7 @@ Kubectl delete -f hastebin.yml
 To delete pod completely
 
 Kubectl exec -it hastebin-5dajdk sh
-To enter into pod terminal
+#To enter into pod terminal, kind of ssh
 
 Cat /data/hastebin/fahusidnebshjd
 To view the data which you wrote earlier
@@ -725,10 +725,13 @@ minikube service myapp-service --url
 ex: 192.168.99.101:30004
 
 #oto get list both the obects pods and services
-kubectl get pods, svc
+kubectl get pods,svc
 
 #to create/apply all manifests in the current directory 
 kubectl create -f .
+
+#to get logs from service
+minikube service voting-service --alsologtostderr
 
 _______________________________
 
@@ -764,12 +767,69 @@ docker run -d --name=worker --link db:db --link redis:redis worker
 _______________________________
 
 
+# EKS, Kubernetes on AWS:
+
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
+
+#to create VPC for EKS
+aws cloudformation create-stack --region us-east-1 --stack-name my-eks-vpc-stack --template-url https://amazon-eks.s3.us-west-2.amazonaws.com/cloudformation/2020-10-29/amazon-eks-vpc-private-subnets.yaml
+
+
+#cluster-role-trust-policy.json , to create role for EKS: 
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+
+#create role
+aws iam create-role --role-name myAmazonEKSClusterRole --assume-role-policy-document file://"cluster-role-trust-policy.json"
+
+#attach policy to the above role
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy --role-name myAmazonEKSClusterRole
 
 
 
 
+# pod execution IAM role for fargate
+aws iam create-role --role-name myAmazonEKSFargatePodExecutionRole --assume-role-policy-document file://"pod-execution-role-trust-policy.json"
 
+#attaching Amazon EKS managed IAM policy to the role
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy  --role-name myAmazonEKSFargatePodExecutionRole
 
+#Create the node IAM role
+aws iam create-role --role-name myAmazonEKSNodeRole --assume-role-policy-document file://"node-role-trust-policy.json"
 
+#Attach the required managed IAM policies to the role.
 
- 
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy --role-name myAmazonEKSNodeRole
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly --role-name myAmazonEKSNodeRole
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy --role-name myAmazonEKSNodeRole
+
+#create or update a kubeconfig file for your cluster
+aws eks update-kubeconfig --region us-east-1 --name example-voting-app
+
+#Test your configuration.
+kubectl get svc
+
+kubectl get pods
+
+kubectl get nodes
+
+git clone https://github.com/kodekloudhub/example-voting-app.git
+
+cd example-voting-app
+
+cd k8s-specifications
+
+kubectl create -f .
+
+kubectl get deployments/svc

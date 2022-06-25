@@ -1,0 +1,169 @@
+Docker/YAML are prerequisites:
+
+
+
+if you have worked with other data structure formats like XML or JSON, its easy to pick up YAML.
+A YAML file is used to represent data. 
+
+It could be data about an organization and all of its employees and their personal details or it could
+be data about a school and all of its students and their grades or it could be data about an automobile
+manufacturing company and all of its cars and its details.
+It could be anything.
+
+
+If you take the data in its simplest form such as key value pair.
+This is how you would define it in YAML .Key and value
+separated by a colon. Remember you must have a space followed by a colon to Differentiate the key and the value.
+
+
+
+
+Let's take a look at how an array is represented. We would like to list some fruits and vegetables.
+fruits followed by a colon on the next line. Enter each item with a dash in the front.
+The dash indicates that it's an element of an array.
+
+
+
+A dictionary is a set of properties grouped together under an item.
+The calories, fat and carbs are different for each fruit.
+Notice the blank space before each item.
+You must have equal number of blank spaces before the properties of a single item.
+So they are all aligned together.
+
+
+
+what if we had extra spaces for fat and carbs then they will fall under calories and thus become
+properties of calories.
+Which doesn't make any sense.
+This will result in a syntax error which will tell you that mapping values are not allowed here because
+calories already have a value set which is 105.
+You can either set a direct value or a hash map.
+You cannot have both.
+So the number of spaces before each property is key in YAML.
+
+
+
+
+Let's take it to another level you can have a list containing dictionaries containing list.
+In this case I have a list of fruits and the elements of the list are banana and grape.
+But each of these elements are further dictionaries containing nutrition information.
+
+
+
+A car is a single object and it has properties such as color, model, transition and price, to store different
+information or properties of a single object.
+We use a dictionary in this simple dictionary.
+I have properties of the card defined in a key: value format.
+This need not be as simple as this.
+
+For example in case we need to split the model further into model, name and make either you could then
+represent this as a dictionary within another dictionary.
+In this case the single value of model is now replaced by a small dictionary with two properties nameand year.
+So this is a dictionary within another dictionary.
+
+
+
+Lets say we would like to store the name of six cars.
+The names are formed by the color and the model of the car to store this, we would use a list or
+an array as it is multiple items of the same type of object since we are only storing the names we have
+a single list of strings.
+
+
+
+What if we would like to store all information about each car.
+Everything that we listed before such as the color model transition and price we will then modify the
+array from a list of strings to a list of dictionaries.
+So we expand each item in the array and replace the name with the dictionary we built earlier.
+This way we are able to represent all information about multiple cars in a single YAML file using a
+list of dictionaries.
+
+
+
+
+Dictionary is an unordered collection whereas lists are ordered collection.
+The two dictionaries that you see here have the same properties for banana.
+
+However you can see that the order of properties fat and carbs do not match in the first dictionary
+fat is defined before carbs and in the second dictionary carbs comes first followed by fat, but that
+doesn't really matter.
+
+
+So the order of items matter the tool list shown are not the same because apple and banana are in different
+positions.
+
+
+ any line beginning with a hash is automatically ignored and considered as a comment.
+ 
+ 
+ 
+ 
+Fruits:
+  - Apple:
+        Calories: 95
+        Fat: 0.3
+        Carbs: 25
+  - Banana:
+      Calories: 105
+      Fat: 0.4
+      Carbs: 27
+  - Orange:
+        Calories: 45
+        Fat: 0.1
+        Carbs: 11
+
+Vegetables:
+  - Carrot:
+        Calories: 25
+        Fat: 0.1
+        Carbs: 6
+  - Tomato:
+      Calories: 22
+      Fat: 0.2
+      Carbs: 4.8
+  - Cucumber:
+        Calories: 8
+        Fat: 0.1
+        Carbs: 1.9
+		
+
+
+
+
+
+
+
+
+
+Employee:
+  Name: Jacob
+  Sex: Male
+  Age: 30
+  Title: Systems Engineer
+  Projects:
+    - Automation
+    - Support
+  Payslips:
+    - Month: June
+      Wage: 4000
+    - Month: July
+      Wage: 4500
+    - Month: August
+      Wage: 4000
+
+
+
+
+# to create yaml manifest file from command, to dry run the pod, which does not create a pod but creates yaml file 
+kubectl run redis --image=redis123 --dry-run=client -o yaml > redis-definition.yaml
+
+kubectl create -f redis-definition.yaml 
+
+
+
+
+
+CloudFront is able to store the frequently accessed content as a cache and the performance is optimized. Other options may help on the performance however they do not store cache for the S3 objects.
+Because CloudFront caches copies of the S3 files in its edge locations and users are routed to the edge location that has the lowest latency.
+
+
+
